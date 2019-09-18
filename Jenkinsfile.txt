@@ -21,7 +21,7 @@ pipeline {
         def pipeline = "test_postman"       
     }
 
-
+    agent none
     stages {  
 
         stage('PullScript') {
