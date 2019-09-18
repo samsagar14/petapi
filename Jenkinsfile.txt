@@ -21,7 +21,6 @@ pipeline {
         def pipeline = "test_postman"       
     }
 
-    agent { label 'bigwin' }  
 
     stages {  
 
