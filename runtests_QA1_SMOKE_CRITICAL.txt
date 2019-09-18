@@ -4,5 +4,5 @@ reporters = "%WORKSPACE%" + "/NewmanResults"
 
 // list of tests (String array)
 tests = [
-	"Swagger Petstore.postman_collection.json"
+	"Swagger_Petstore.postman_collection.json"
 ]
