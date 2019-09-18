@@ -99,7 +99,7 @@ stage('Prepare Notification') {
                     checkout scm: [$class: 'GitSCM', 
                             branches: [[name: '*/DIP-777']], 
                             doGenerateSubmoduleConfigurations: false, 
-                            extensions: [[$class: 'SparseCheckoutPaths', 
+                            extensions: [[$class: 'CleanBeforeCheckout'],[$class: 'SparseCheckoutPaths', 
                                             sparseCheckoutPaths: [[path: "Quality_Automation/${env.pipeline}"]]]], 
                             submoduleCfg: [], 
                             userRemoteConfigs: [[credentialsId: '', 
