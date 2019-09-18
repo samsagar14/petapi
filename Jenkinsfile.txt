@@ -90,16 +90,16 @@ pipeline {
                     echo "Starting of copy results..."
                     bat '''
                     
-                    SET source=/E/Jenkins/Slaves/Pro/workspace/QTA/Newman/%pipeline%/NewmanResults/*
+                    SET source=/D/Jenkins/Slaves/Pro/workspace/test_postman/Newman/%pipeline%/NewmanResults/*
                     SET destination=/srv/www/htdocs/testing/reports/%pipeline%
                     SET privatekey=C:\\Users\\Public\\.ssh\\dashboard.ppk
                     SET Path=%PATH%;"C:\\Program Files\\Git\\usr\\bin"
 
-                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@10.26.103.44 mkdir %destination%
-                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@10.26.103.44 mkdir %destination%/%BUILD_NUMBER%
-                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@10.26.103.44 mkdir %destination%/%BUILD_NUMBER%/Results
+                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@localhost:8080 mkdir %destination%
+                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@localhost:8080 mkdir %destination%/%BUILD_NUMBER%
+                    ssh -v -o StrictHostKeyChecking=no -i %privatekey% jenkins@localhost:8080 mkdir %destination%/%BUILD_NUMBER%/Results
 
-                    scp -r -v -i %privatekey% %source% jenkins@10.26.103.44:%destination%/%BUILD_NUMBER%/Results                   
+                    scp -r -v -i %privatekey% %source% jenkins@localhost:8080:%destination%/%BUILD_NUMBER%/Results                   
                    
                     '''
             }
