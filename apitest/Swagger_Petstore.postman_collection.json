@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "22948636-99f2-451b-bf03-f1e3ea977f26",
-		"name": "Swagger Petstore",
+		"name": "Swagger_Petstore",
 		"description": "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -342,6 +342,18 @@
 			"item": [
 				{
 					"name": "Returns pet inventories by status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce2cb2fd-b8b6-4cfb-b0db-3da0c385f562",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -761,6 +773,30 @@
 				}
 			],
 			"description": "Folder for user"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2b9428b9-7024-4afe-b74d-63f1d6ecd9f7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a2585cab-0a75-4afe-a269-352817cb4e1a",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});"
+				]
+			}
 		}
 	]
 }
