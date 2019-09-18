@@ -102,7 +102,7 @@ pipeline {
                             extensions: [[$class: 'SparseCheckoutPaths', 
                                             sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
                             submoduleCfg: [], 
-                            userRemoteConfigs: [[credentialsId: '', 
+                            userRemoteConfigs: [[credentialsId: '861185c89d40a84e46cd43c7410250019a664633', 
                             url: 'https://github.com/samsagar14/devops_jenkins_pipelines.git']]]
                 }
 	}
