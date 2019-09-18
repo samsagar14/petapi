@@ -100,7 +100,7 @@ stage('Prepare Notification') {
                             branches: [[name: '*/DIP-777']], 
                             doGenerateSubmoduleConfigurations: false, 
                             extensions: [[$class: 'SparseCheckoutPaths', 
-                                            sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
+                                            sparseCheckoutPaths: [[path: "Quality_Automation/${env.pipeline}"]]]], 
                             submoduleCfg: [], 
                             userRemoteConfigs: [[credentialsId: '', 
                             url: 'https://github.com/samsagar14/devops_jenkins_pipelines.git']]]
