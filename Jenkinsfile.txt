@@ -97,7 +97,7 @@ pipeline {
 
                 dir('Devops') {
                     checkout scm: [$class: 'GitSCM', 
-                            branches: [[name: '*/DIP-777']], 
+                            branches: [[name: "*" + branchName]], 
                             doGenerateSubmoduleConfigurations: false, 
                             extensions: [[$class: 'SparseCheckoutPaths', 
                                             sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
