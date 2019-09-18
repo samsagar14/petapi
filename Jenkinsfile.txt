@@ -1,0 +1,113 @@
+import org.json.JSONObject
+
+pipeline {
+    environment {
+
+        // github settings 
+
+        def branchName = "master"
+        def repoName = "petapi"
+
+        // hipchat settings 
+
+        //def hipchatroom = ""
+
+        // slack settings
+
+        def slackchannel = "postmantest" 
+
+        // general settings
+
+        def pipeline = "test_postman"       
+    }
+
+    agent { label 'bigwin' }  
+
+    stages {  
+
+        stage('Send Hipchat pre-build message'){
+            environment {
+                def message = """
+                        Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
+                    """
+            }
+            steps {
+                echo "Sending Hipchat message..."                   
+                hipchatSend room:"${hipchatroom}", message:"${message}"
+            }        
+        }
+
+        stage('Send Slack pre-build message'){
+            environment {
+                def message = """
+                        Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
+                    """
+            }
+            steps {
+                echo "Sending Slack message..."                   
+                slackSend channel: "${slackchannel}", message: "${message}"
+            }        
+        }
+        
+        stage('PullScript') {
+            steps {             
+                checkout poll: false, 
+                scm: [$class: 'GitSCM', 
+                    branches: [[name: "*" + branchName]], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'CloneOption', 
+                                                depth: 0, 
+                                                noTags: false, 
+                                                reference: '', 
+                                                shallow: false, 
+                                                timeout: 60]], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/samsagar14/' + repoName  + '.git']]]
+            }
+        }
+        
+        stage('Execute Scripts'){
+            steps {
+            
+                echo "Start Automated API Testing"
+
+                load "${WORKSPACE}/runtests_QA1_SMOKE_CRITICAL.txt"
+                
+                script {
+
+                    if(fileExists('NewmanResults')) {
+                        bat 'rmdir /s /q NewmanResults'
+                    } 
+                    
+                    bat 'mkdir NewmanResults'
+                                    
+                }   
+                                
+                script {
+                    tests.each {
+                        bat """
+                            call newman run "${testsfolder}${it}" -e "${environment}" --reporters html,junit --reporter-html-export "${reporters}//${it.minus(".json")}.html" --reporter-junit-export "${reporters}//${it.minus(".json")}.xml"
+                            IF %ERRORLEVEL% NEQ 0 Echo An error was found
+                            exit /B
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Publish Newman results'){
+            steps{
+                echo "Start publishing Newman results"
+                publishHTML (target: [
+                      allowMissing: false,
+                      alwaysLinkToLastBuild: false,
+                      keepAll: true,
+                      reportDir: 'NewmanResults/',
+                      reportFiles: "*.html",
+                      reportName: "Newman_Report"
+                      ])
+            }
+        }
+		
+   }
+  }
