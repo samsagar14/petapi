@@ -93,6 +93,18 @@ pipeline {
                     SET folder=%WORKSPACE%\\DevOps
                     if not exist %folder% mkdir %folder%
                 """
+ // get ps script from repo and checkout it to subfolder
+
+                dir('Devops') {
+                    checkout scm: [$class: 'GitSCM', 
+                            branches: [[name: '*/DIP-777']], 
+                            doGenerateSubmoduleConfigurations: false, 
+                            extensions: [[$class: 'SparseCheckoutPaths', 
+                                            sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
+                            submoduleCfg: [], 
+                            userRemoteConfigs: [[credentialsId: '', 
+                            url: 'https://github.com/samsagar14/devops_jenkins_pipelines.git']]]
+                }
 
 		 // copy ps script to workspace root
 		
