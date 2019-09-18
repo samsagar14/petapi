@@ -25,30 +25,6 @@ pipeline {
 
     stages {  
 
-        stage('Send Hipchat pre-build message'){
-            environment {
-                def message = """
-                        Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
-                    """
-            }
-            steps {
-                echo "Sending Hipchat message..."                   
-                hipchatSend room:"${hipchatroom}", message:"${message}"
-            }        
-        }
-
-        stage('Send Slack pre-build message'){
-            environment {
-                def message = """
-                        Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
-                    """
-            }
-            steps {
-                echo "Sending Slack message..."                   
-                slackSend channel: "${slackchannel}", message: "${message}"
-            }        
-        }
-        
         stage('PullScript') {
             steps {             
                 checkout poll: false, 
