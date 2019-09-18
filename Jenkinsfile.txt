@@ -85,6 +85,18 @@ pipeline {
             }
         }
 
+		 stage('Prepare Notification') {
+           
+            steps{
+
+                bat """
+                    SET folder=%WORKSPACE%\\DevOps
+                    if not exist %folder% mkdir %folder%
+                """
+
+		 // copy ps script to workspace root
+		
+
 	 bat """
                     SET source=%WORKSPACE%\\DevOps\\Quality Automation\\%pipeline%\\api_variables.ps1
                     xcopy /Y "%source%" "%WORKSPACE%"
@@ -99,6 +111,7 @@ pipeline {
                         powershell.exe -NonInteractive -ExecutionPolicy Bypass -Command %WORKSPACE%\\api_variables.ps1                  
                         EXIT /b
                     '''             
-		
+			}
+		}
    }
   }
