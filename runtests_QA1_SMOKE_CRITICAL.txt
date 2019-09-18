@@ -1,0 +1,8 @@
+testsfolder = "%WORKSPACE%/apitest/"
+environment = testsfolder + "/Environments/QA1.postman_environment.json"
+reporters = "%WORKSPACE%" + "/NewmanResults"
+
+// list of tests (String array)
+tests = [
+	"Swagger Petstore.postman_collection.json"
+]
