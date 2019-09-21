@@ -62,7 +62,7 @@ pipeline {
                 script {
                     tests.each {
                         bat """
-                            call newman run apitest/Swagger_Petstore.postman_collection.json -e apitest/Environments/QA1.postman_environment.json -r statsd --reporter-statsd-destination 192.168.0.32 --reporter-statsd-port 3000
+                            call newman run "${testsfolder}${it}" -e "${environment}" --reporters html,junit --reporter-html-export "${reporters}//${it.minus(".json")}.html" --reporter-junit-export "${reporters}//${it.minus(".json")}.xml"
                             IF %ERRORLEVEL% NEQ 0 Echo An error was found
                             exit /B
                         """
