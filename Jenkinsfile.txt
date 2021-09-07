@@ -126,7 +126,7 @@ pipeline {
                             extensions: [[$class: 'SparseCheckoutPaths', 
                                             sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
                             submoduleCfg: [], 
-                            userRemoteConfigs: [[credentialsId: '2ac4ae14-9741-469b-892e-0ab81123ce6c', 
+                            userRemoteConfigs: [[credentialsId: 'ad2ee82a-948c-4149-a75a-a559c49df311', 
                             url: '']]]
                 }
 
