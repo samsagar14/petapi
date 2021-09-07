@@ -1,6 +1,9 @@
 # api_variables.ps1
 # Date : 03/04/2018
-# Purpose : get values from newman run results and use them for chat notification
+# Purpose : get values from newman run results and use them for hipchat notification
+
+
+
 # clean environment
 
 Remove-Item apivar.txt -ErrorAction SilentlyContinue
@@ -15,6 +18,7 @@ $messagesSlack = @()
 [INT]$totalsum = 0
 [INT]$totalfail = 0
 [INT]$totalpass = 0
+$elasticindex = "cxgocaqa_api"
 
 for ($i=0; $i -lt $xmlfiles.Length ; $i++) {   
     
@@ -37,9 +41,7 @@ for ($i=0; $i -lt $xmlfiles.Length ; $i++) {
       
         }
 
-    } 
-   
-    else {
+    } else {
 
         $total = $outputxml.testsuites.testsuite.tests        
     }
@@ -49,13 +51,40 @@ for ($i=0; $i -lt $xmlfiles.Length ; $i++) {
     $filecollection = $file.Replace(".postman_collection.xml","")
     $filehtml = $file.Replace(".xml",".html")
 
-    $message = '"' + $filecollection + ": Total: $total, Pass: $pass, Fail: $fail, Report: <a href=''>Open</a>" + '",'
-    $messageslack = '"' + $filecollection + "\nTotal: $total, Pass: $pass, Fail: $fail, Report: <>" + '",'  
+    $message = '"' + $filecollection + ": Total: $total, Pass: $pass, Fail: $fail, Report: <a href='http://dashboard.cemex.com:81/testing/reports/$env:pipeline/$env:BUILD_NUMBER/Results/$filehtml'>Open</a>" + '",'
+    $messageslack = '"' + $filecollection + "\nTotal: $total, Pass: $pass, Fail: $fail, Report: <http://dashboard.cemex.com:81/testing/reports/$env:pipeline/$env:BUILD_NUMBER/Results/$filehtml|Open>" + '",'  
     $messages += $message
     $messagesSlack += $messageslack
     $totalsum += $total
     $totalfail += $fail
     $totalpass += $pass
+
+    # this block prepare output ndjson file which will be used for upload data to elasticsearch using method _bulk
+
+    $date = get-date -Format("yyyy-MM-ddTHH:mm:ssZ")
+    $id = $outputxml.testsuites.testsuite[0].id
+    $countrycode = ($file.Split("_"))[3]
+    Switch ($countrycode)
+    {
+        AE {$country = "United Arab Emirates"}
+        COL {$country = "Colombia"}
+        CZ {$country = "Czech Republic"}
+        DE {$country = "Germany"}
+        FR {$country = "France"}
+        IL {$country = "Israel"}
+        ISRAEL {$country = "Israel"}
+        MEX {$country = "Mexico"}
+        ES {$country = "Spain"}
+        EG {$country = "Egypt"}
+        SPAIN {$country = "Spain"}  
+        UK {$country = "United Kingdom"} 
+        USA {$country = "USA"}
+
+    }
+    $type = ($file.Split("_")[4]).Replace(".postman" , "")
+    $jsonelastic = "{ `"index`" : { `"_index`" : `"$elasticindex`", `"_type`" : `"_doc`", `"_id`" : `"$id`" } }" | Out-File elk -Encoding ascii  -Append
+    $jsonelastic1 = "{ `"build`" :`"$env:BUILD_NUMBER`" ,`"timestamp`" :`"$date`" , `"countrycode`" : `"$countrycode`" , `"country`" : `"$country`" , `"failed`" : `"$fail`" , `"passed`" : `"$pass`" , `"total`" : `"$total`" , `"type`" : `"$type`" }" | Out-File elk -Encoding ascii -Append
+}
 
 # this HereString will be added to txt file later
 
