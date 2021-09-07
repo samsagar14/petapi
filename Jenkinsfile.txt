@@ -21,8 +21,6 @@ pipeline {
         def pipeline = "test_postman"       
     }
 
-    agent { label 'test' }  
-
     stages {  
 
         stage('Send googlechat pre-build message'){
