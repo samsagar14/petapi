@@ -231,9 +231,9 @@ pipeline {
 
            echo "Loading API variables ..."
 
-            load 'apivar.txt'            
+           load 'apivar.txt'            
 
-            echo "Sending notifications..."
+           echo "Sending notifications..."
 
             script {                  
                    
