@@ -8,10 +8,6 @@ pipeline {
         def branchName = "master"
         def repoName = "petapi"
 
-        // googlechat settings 
-
-        def googlechatroom = ""
-
         // slack settings
 
         def slackchannel = "postmantest" 
