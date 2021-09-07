@@ -37,7 +37,9 @@ for ($i=0; $i -lt $xmlfiles.Length ; $i++) {
       
         }
 
-    } else {
+    } 
+    }
+    else {
 
         $total = $outputxml.testsuites.testsuite.tests        
     }
