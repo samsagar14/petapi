@@ -20,6 +20,8 @@ pipeline {
 
         def pipeline = "test_postman"       
     }
+    
+    agent any
 
     stages {  
 
