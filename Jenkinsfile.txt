@@ -35,5 +35,23 @@ pipeline {
                 echo "Sending Slack message..."                   
                 slackSend channel: "${slackchannel}", message: "${message}"
             }        
-        }    
-}} 
+        }
+        
+        stage('PullScript') {
+            steps {             
+                checkout poll: false, 
+                scm: [$class: 'GitSCM', 
+                    branches: [[name: "*" + branchName]], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'CloneOption', 
+                                                depth: 0, 
+                                                noTags: false, 
+                                                reference: '', 
+                                                shallow: false, 
+                                                timeout: 60]], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[credentialsId: '62e69b92-a03e-46ee-bec6-f7c8b866fba0', url: 'https://github.com/samsagar14/' + repoName  + '.git']]]
+            }
+        }
+        }
+        }
