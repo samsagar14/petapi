@@ -31,6 +31,10 @@ pipeline {
                         Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
                     """
             }
+            steps {
+                echo "Sending Slack message..."                   
+                slackSend channel: "${slackchannel}", message: "${message}"
+            }
             
         }
         
