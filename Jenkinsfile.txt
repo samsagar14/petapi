@@ -25,18 +25,6 @@ pipeline {
 
     stages {  
 
-        stage('Send googlechat pre-build message'){
-            environment {
-                def message = """
-                        Starting Job ${env.JOB_NAME} with Build Number: ${env.BUILD_NUMBER} ...
-                    """
-            }
-            steps {
-                echo "Sending Googlechat message..."                   
-                googlechatSend room:"${googlechatroom}", message:"${message}"
-            }        
-        }
-
         stage('Send Slack pre-build message'){
             environment {
                 def message = """
