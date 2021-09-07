@@ -50,7 +50,7 @@ pipeline {
                                                 shallow: false, 
                                                 timeout: 60]], 
                     submoduleCfg: [], 
-                    userRemoteConfigs: [[credentialsId: 'ad2ee82a-948c-4149-a75a-a559c49df311', url: 'https://github.com/samsagar14/' + repoName  + '.git']]]
+                    userRemoteConfigs: [[credentialsId: 'daded241-7815-4904-a025-32b8fca5c708', url: 'https://github.com/samsagar14/' + repoName  + '.git']]]
             }
         }
         
@@ -114,7 +114,7 @@ pipeline {
                             extensions: [[$class: 'SparseCheckoutPaths', 
                                             sparseCheckoutPaths: [[path: "Quality Automation/${env.pipeline}"]]]], 
                             submoduleCfg: [], 
-                            userRemoteConfigs: [[credentialsId: 'ad2ee82a-948c-4149-a75a-a559c49df311', 
+                            userRemoteConfigs: [[credentialsId: 'daded241-7815-4904-a025-32b8fca5c708', 
                             url: '']]]
                 }
 
